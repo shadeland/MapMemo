@@ -1,0 +1,18 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=10:6D:F3:92:97:62:A7:65:64:D5:BE:E1:B6:91:5A:3E:79:37:C8:9B%3Bcom.shadeland.mapmemo
+
+    You can also add your credentials to an existing key, using this line:
+    10:6D:F3:92:97:62:A7:65:64:D5:BE:E1:B6:91:5A:3E:79:37:C8:9B;com.shadeland.mapmemo
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        AIzaSyBxrXYxhFtllWmfFX3x10CZ4h65DZ-dSkc
+    </string>
+</resources>

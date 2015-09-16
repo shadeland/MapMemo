@@ -2,9 +2,5 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <fragment android:name="com.shadeland.mapmemo.MapFragment"
-        android:id="@+id/map"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent" />
+
 </LinearLayout>
