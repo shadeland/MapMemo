@@ -1,12 +1,18 @@
 package com.shadeland.mapmemo;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -15,9 +21,10 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class MapsActivity extends FragmentActivity{
+public class MapsActivity extends FragmentActivity implements ItemFragment.OnFragmentInteractionListener{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    SupportMapFragment mMapFragment = SupportMapFragment.newInstance();
 
     ArrayList<Place> places= new ArrayList<Place>();
 
@@ -32,17 +39,20 @@ Json Dummy Data To Check The Functionality
 TODO    FileLoader For now !
 */
         places = PlaceLab.loadJson("[{\n" +
+                "\t\t\"id\": \"1\",\n" +
                "\t\t\"name\": \"Castelluccio Valmaggiore\",\n" +
                "\t\t\"lat\": \"43.63301\",\n" +
                "\t\t\"lng\": \"65.77033\"\n" +
                "\t},\n" +
                "\t{\n" +
                "\t\t\"name\": \"Port Augusta\",\n" +
+                "\t\t\"id\": \"1\",\n" +
                "\t\t\"lat\": \"-53.63728\",\n" +
                "\t\t\"lng\": \"73.93548\"\n" +
                "\t},\n" +
                "\t{\n" +
                "\t\t\"name\": \"Thorold\",\n" +
+                "\t\t\"id\": \"1\",\n" +
                "\t\t\"lat\": \"11.56913\",\n" +
                "\t\t\"lng\": \"-14.48823\"\n" +
                "\t}\n" +
@@ -50,11 +60,24 @@ TODO    FileLoader For now !
 
 
     }
+    public ArrayList<Place> getPlaces(){
+        return places;
+    }
 
+    MPageAdapter mPageAdapter;
+    ViewPager mViewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+//      Add Fragments to manager
+
+//        Setup viewpagerp
+        mPageAdapter = new MPageAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mPageAdapter);
+
         try {
             populatePlaces();
         } catch (JSONException e) {
@@ -96,8 +119,7 @@ TODO    FileLoader For now !
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
+            mMap = mMapFragment.getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
@@ -116,5 +138,42 @@ TODO    FileLoader For now !
             mMap.addMarker(new MarkerOptions().position(new LatLng(p.getLat(), p.getLng())).title(p.getName()));
         }
 
+    }
+
+    @Override
+    public void onFragmentInteraction(int id) {
+        mViewPager.setCurrentItem(0);
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(places.get(id).getLat(),places.get(id).getLng()),14));
+
+    }
+
+    public class MPageAdapter extends FragmentPagerAdapter{
+
+        public MPageAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+           switch (position){
+               case 0:
+                   return mMapFragment;
+               case 1:
+                   return ItemFragment.newInstance("1","2");
+
+
+
+
+           }
+
+
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
     }
 }

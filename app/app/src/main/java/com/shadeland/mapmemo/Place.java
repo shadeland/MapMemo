@@ -8,6 +8,7 @@ import org.json.JSONObject;
  */
 public class Place  {
     String name;
+   public int id;
     long lat;
     long lng;
 
@@ -18,6 +19,7 @@ public class Place  {
         name = json.getString("name");
         lat = json.getLong("lat");
         lng = json.getLong("lng");
+        id= json.getInt("id");
 
     }
 
@@ -45,5 +47,8 @@ public class Place  {
         this.lng = lng;
     }
 
-
+    @Override
+    public String toString() {
+        return name;
+    }
 }
